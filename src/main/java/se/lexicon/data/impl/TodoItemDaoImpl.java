@@ -194,7 +194,7 @@ public class TodoItemDaoImpl implements TodoItemDao {
                     int assignee = resultSet.getInt(6);
 
 
-                    //  todoByassignee = new Person(id, title,description,deadline,done ,assignee_Id);
+
                     todoByassignee.add( new TodoItem(Id, title, description, deadline, done, assignee));
 
                 }
@@ -207,16 +207,14 @@ public class TodoItemDaoImpl implements TodoItemDao {
 
     @Override
     public List<TodoItem> FindByUnassigned() {
-
         List<TodoItem> todoByUnassignee = new ArrayList<>();
-
+String query = "SELECT * FROM todo_item WHERE  assignee_id is null";
         try (
                 Connection connection = DBConnectionManager.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM todo_item WHERE  assignee_id is null")
+                Statement statement = connection.createStatement();
         ) {
-            preparedStatement.setInt(1,assignee_id);
             try (
-                    ResultSet resultSet = preparedStatement.executeQuery()
+                    ResultSet resultSet = statement.executeQuery(query)
             ) {
                 if (!resultSet.next()) {
                     int Id = resultSet.getInt(1);
@@ -224,16 +222,16 @@ public class TodoItemDaoImpl implements TodoItemDao {
                     String description = resultSet.getString(3);
                     LocalDate deadline = resultSet.getDate(4).toLocalDate();
                     boolean done = resultSet.getBoolean(5);
-                    int assignee = resultSet.getInt(6);
+                    int assignee_id = resultSet.getInt(6);
 
 
                     //  todoByassignee = new Person(id, title,description,deadline,done ,assignee_Id);
-                    todoByUnassignee.add(new TodoItem(Id, title, description, deadline, done, assignee));
+                    todoByUnassignee.add(new TodoItem(Id, title, description, deadline, done, assignee_id));
 
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Failed to fetch data for findByUnassignee with id: " + assignee_id + " " + e.getMessage());
+            System.out.println("Failed to fetch data for findByUnassignee with id: "  + " " + e.getMessage());
         }
         return todoByUnassignee;
     }

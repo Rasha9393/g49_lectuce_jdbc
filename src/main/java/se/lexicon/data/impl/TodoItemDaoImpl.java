@@ -223,9 +223,6 @@ String query = "SELECT * FROM todo_item WHERE  assignee_id is null";
                     LocalDate deadline = resultSet.getDate(4).toLocalDate();
                     boolean done = resultSet.getBoolean(5);
                     int assignee_id = resultSet.getInt(6);
-
-
-                    //  todoByassignee = new Person(id, title,description,deadline,done ,assignee_Id);
                     todoByUnassignee.add(new TodoItem(Id, title, description, deadline, done, assignee_id));
 
                 }
